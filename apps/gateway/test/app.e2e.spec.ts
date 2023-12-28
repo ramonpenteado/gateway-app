@@ -1,17 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UsersService } from '@users/services/users.service';
+import { INestApplication } from '@nestjs/common';
+import * as request from 'supertest';
 import { UsersModule } from '@users/services/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import configuration from '@shared/shared/configuration';
+import { AppController } from '../src/app.controller';
+import { AppService } from '../src/app.service';
+import { UsersService } from '@users/services/users.service';
 
-describe('AppController', () => {
-  let appController: AppController;
+describe('AppController (e2e)', () => {
+  let app: INestApplication;
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+    const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         UsersModule,
         JwtModule.register({
@@ -28,18 +30,13 @@ describe('AppController', () => {
       providers: [AppService, UsersService],
     }).compile();
 
-    appController = app.get<AppController>(AppController);
+    app = moduleFixture.createNestApplication();
+    await app.init();
   });
 
-  describe('root', () => {
-    const user = {
-      id: 1,
-      name: 'John Doe',
-      email: 'ramon.penteado@gmail.com',
-    }
-    it('should return "User Object"', async () => {
-      const response = await appController.getUserById(1)
-      expect(response.email).toBe(user.email);
-    });
+  it('/healthcheck (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/healthcheck')
+      .expect(200)
   });
 });

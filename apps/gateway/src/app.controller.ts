@@ -6,6 +6,15 @@ import { AuthGuard } from './auth-guard';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get('/healthcheck')
+  @HttpCode(HttpStatus.OK)
+  healthcheck(): any {
+    return {
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+    }
+  }
+
   @UseGuards(AuthGuard)
   @Get('user/:id')
   async getUserById(@Param() id: number ): Promise<any> {
