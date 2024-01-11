@@ -28,7 +28,7 @@ export class AppController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @Post('user/sign_in')
+  @Post('user/signin')
   async signIn(@Body() userInfo: any): Promise<any> {
     const { email, pass } = userInfo;
     console.log("email - gateway controler", email)
