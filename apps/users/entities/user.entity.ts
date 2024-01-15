@@ -1,11 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm';
+
+export enum ROLES  {
+    ADMIN = 'admin',
+    USER = 'user',
+    GUEST = 'guest',
+}
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-    @Column()
+    @PrimaryColumn()
     username: string;
 
     @Column()
@@ -13,4 +19,23 @@ export class User {
 
     @Column({default: true})
     isActive: boolean;
+
+    @Column({default: () => 'CURRENT_TIMESTAMP'})
+    createdAt: Date;
+
+    @Column({default: () => 'CURRENT_TIMESTAMP'})
+    updatedAt: Date;
+
+    @Column()
+    name: string;
+
+    @PrimaryColumn()
+    email: string;
+
+    @Column({
+        default: ROLES.USER,
+        enum: ROLES,
+        type: 'enum',
+    })
+    role: ROLES;
 }
