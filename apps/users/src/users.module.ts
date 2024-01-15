@@ -1,13 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import configuration from '@shared/shared/configuration';
 import { User } from '../entities/user.entity';
-import { UsersDataSource } from './users.datasource';
 
 @Module({
   imports: [
@@ -34,7 +32,6 @@ import { UsersDataSource } from './users.datasource';
       logging: true,
     }),
   ],
-  controllers: [UsersController],
   providers: [UsersService],
 })
 export class UsersModule {
