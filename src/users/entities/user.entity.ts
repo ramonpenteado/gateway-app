@@ -1,13 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm';
-
-export enum ROLES  {
-    ADMIN = 'admin',
-    USER = 'user',
-    GUEST = 'guest',
-}
-
+import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Roles } from '../../security/authorization/roles.enum';
+import { Presence } from 'src/prensence/entities/presence.entity';
 @Entity()
-export class UserEntity {
+export class User {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -33,9 +28,13 @@ export class UserEntity {
     email: string;
 
     @Column({
-        default: ROLES.USER,
-        enum: ROLES,
+        default: Roles.USER,
+        enum: Roles,
         type: 'enum',
     })
-    role: ROLES;
+    roles: Roles[];
+
+    @ManyToMany(() => Presence, (presence) => presence.users)
+    @JoinTable()
+    presence: Presence[];
 }

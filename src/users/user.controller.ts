@@ -1,6 +1,10 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { UsersService } from './user.service';
-import { AuthGuard } from '../auth-guard';
+import { AuthGuard } from '../security/authentication/auth.guard';
+import { User } from './entities/user.entity';
+import { Roles } from 'src/security/authorization/roles.enum';
+import { AuthByRole } from 'src/security/authorization/roles.decorator';
+import { Public } from 'src/security/authorization/public.decorator';
 
 @Controller()
 export class UsersController {
@@ -15,24 +19,27 @@ export class UsersController {
     }
   }
 
-  @UseGuards(AuthGuard)
-  @Get('user/:id')
-  async getUserById(@Param() id: number ): Promise<any> {
-    return await this.userService.getUserById(id);
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Post('user/signin')
+  async signIn(@Body() userInfo: {email: string, pass: string}): Promise<{access_token: string}> {
+    const { email, pass } = userInfo;
+    return await this.userService.signIn(email, pass);
   }
 
-  @UseGuards(AuthGuard)
-  @Get('user/:email')
-  async getUserByEmail(@Param() email: string ): Promise<any> {
-    return await this.userService.getUserByEmail(email);
+  @Public()
+  @HttpCode(HttpStatus.CREATED)
+  @Post('user/signup')
+  async createUser(@Body() user: any): Promise<User> {
+    return await this.userService.createUser(user);
   }
 
   @HttpCode(HttpStatus.OK)
-  @Post('user/signin')
-  async signIn(@Body() userInfo: any): Promise<any> {
-    const { email, pass } = userInfo;
-    console.log("email - gateway controler", email)
-    return await this.userService.signIn(email, pass);
+  @AuthByRole(Roles.ADMIN)
+  @UseGuards(AuthGuard)
+  @Get('user/:email')
+  async getUserByEmail(@Param('email') email: string ): Promise<User[]> {
+    return await this.userService.getUserByEmail(email.toString());
   }
 
 }
