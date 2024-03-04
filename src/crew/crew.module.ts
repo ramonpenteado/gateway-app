@@ -3,16 +3,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from 'src/security/authentication/auth.guard';
 
-import { PresenceService } from './presence.service';
-import { Presence } from './entities/presence.entity';
-import { PresenceController } from './presence.controller';
+import { CrewService } from './crew.service';
+import { Crew } from './entities/crew.entity';
+import { CrewController } from './crew.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Presence]),
+        TypeOrmModule.forFeature([Crew]),
         JwtModule.registerAsync({
             imports: [ConfigModule],
             useFactory: async (configService: ConfigService) => ({
@@ -23,12 +22,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         }),
     ],
     providers: [
-        PresenceService,
+        CrewService,
         {
             provide: APP_GUARD,
             useClass: AuthGuard,
         },
     ],
-    controllers: [PresenceController],
+    controllers: [CrewController],
 })
-export class PresenceModule {}
+export class CrewModule {}

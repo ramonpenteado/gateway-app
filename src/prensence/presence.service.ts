@@ -29,25 +29,6 @@ export class PresenceService {
         }
     }
 
-    public async getPresenceByUserId(userId: string): Promise<Presence[]> {
-        try {
-            const presence = await this.presenceRepository.find({ where: { users: { id: userId }}});
-            return presence;
-        } catch (error) {
-            console.error(error);
-            return null;
-        }
-    }
-
-    public async createPresence(presence: any): Promise<Presence> {
-        try {
-            const newPresence = await this.presenceRepository.save(presence);
-            return newPresence;
-        } catch (error) {
-            return null;
-        }
-    }
-
     public async updatePresence(id: string, presence: any): Promise<Presence> {
         try {
             const updatedPresence = await this.presenceRepository.update(id, presence);

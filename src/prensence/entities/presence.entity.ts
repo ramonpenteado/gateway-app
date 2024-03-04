@@ -1,8 +1,7 @@
-import { Classes } from 'src/classes/entities/classes.entity';
-import { User } from 'src/users';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, OneToOne } from 'typeorm';
+import { Crew } from 'src/crew/entities/crew.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
 
-@Entity()
+@Entity('presence')
 export class Presence {
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -13,9 +12,6 @@ export class Presence {
     @Column({default: () => 'CURRENT_TIMESTAMP'})
     updatedAt: Date;
 
-    @ManyToMany(() => User, user => user.id)
-    users: User[];
-
-    @OneToOne(() => Classes, classes => classes.id)
-    class: Classes;
+    @OneToOne(() => Crew, crew => crew.id)
+    crew: Crew;
 }

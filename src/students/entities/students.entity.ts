@@ -1,8 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, Unique, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { Roles } from '../../security/authorization/roles.enum';
-import { Presence } from 'src/prensence/entities/presence.entity';
-@Entity()
-export class User {
+import { Crew } from 'src/crew/entities/crew.entity';
+import { Parent } from 'src/parents';
+
+@Entity('student')
+@Unique(['username'])
+@Unique(['email'])
+export class Student {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -11,6 +15,9 @@ export class User {
 
     @Column()
     password: string;
+
+    @PrimaryColumn()
+    email: string;
 
     @Column({default: true})
     isActive: boolean;
@@ -21,12 +28,6 @@ export class User {
     @Column({default: () => 'CURRENT_TIMESTAMP'})
     updatedAt: Date;
 
-    @Column()
-    name: string;
-
-    @PrimaryColumn()
-    email: string;
-
     @Column({
         default: Roles.USER,
         enum: Roles,
@@ -34,7 +35,13 @@ export class User {
     })
     roles: Roles[];
 
-    @ManyToMany(() => Presence, (presence) => presence.users)
-    @JoinTable()
-    presence: Presence[];
+    @Column()
+    first_name: string;
+
+    @Column()
+    last_name: string;
+
+    @ManyToOne(() => Parent, parent => parent.students)
+    parent: Parent;
+
 }

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './user.service'
+import { ParentService } from './parents.service'
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
-import { UsersController } from './user.controller';
+import { Parent } from './entities/parents.entity';
+import { ParentController } from './parents.controller';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from 'src/security/authentication/auth.guard';
 
@@ -19,14 +19,14 @@ import { AuthGuard } from 'src/security/authentication/auth.guard';
       inject: [ConfigService],
     }),
     ConfigModule.forRoot({isGlobal: true}),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([Parent]),
   ],
-  providers: [UsersService,
+  providers: [ParentService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
     }
   ],
-  controllers: [UsersController],
+  controllers: [ParentController],
 })
-export class UsersModule {}
+export class ParentModule {}
