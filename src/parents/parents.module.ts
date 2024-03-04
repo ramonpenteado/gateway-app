@@ -1,12 +1,13 @@
-import { Module } from '@nestjs/common';
-import { ParentService } from './parents.service'
-import { JwtModule } from '@nestjs/jwt';
+import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { AuthGuard } from 'src/security/authentication/auth.guard';
 import { Parent } from './entities/parents.entity';
 import { ParentController } from './parents.controller';
-import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from 'src/security/authentication/auth.guard';
+import { ParentService } from './parents.service'
 
 @Module({
   imports: [

@@ -41,8 +41,7 @@ export class Parent {
     @Column()
     last_name: string;
 
-    @OneToMany(() => Student, student => student.parent)
-    @JoinColumn({ foreignKeyConstraintName: 'fk_parent_student' })
-    students: Parent;
+    @OneToMany(() => Student, (student) => student.parent)
+    students: Student[];
 
 }

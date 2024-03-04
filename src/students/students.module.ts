@@ -1,12 +1,13 @@
-import { Module } from '@nestjs/common';
-import { StudentService } from './students.service'
-import { JwtModule } from '@nestjs/jwt';
+import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { AuthGuard } from 'src/security/authentication/auth.guard';
+import { StudentService } from './students.service'
 import { Student } from './entities/students.entity';
 import { StudentController } from './students.controller';
-import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from 'src/security/authentication/auth.guard';
 
 @Module({
   imports: [
@@ -21,11 +22,12 @@ import { AuthGuard } from 'src/security/authentication/auth.guard';
     ConfigModule.forRoot({isGlobal: true}),
     TypeOrmModule.forFeature([Student]),
   ],
-  providers: [StudentService,
+  providers: [
+    StudentService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
-    }
+    },
   ],
   controllers: [StudentController],
 })

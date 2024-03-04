@@ -1,12 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, Unique, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, Unique, OneToMany } from 'typeorm';
 import { Roles } from '../../security/authorization/roles.enum';
-import { Crew } from 'src/crew/entities/crew.entity';
-import { Parent } from 'src/parents';
+import { Student } from 'src/students';
 
-@Entity('student')
+@Entity('parent')
 @Unique(['username'])
 @Unique(['email'])
-export class Student {
+export class Parent {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -41,8 +40,7 @@ export class Student {
     @Column()
     last_name: string;
 
-    @ManyToOne(() => Parent, (parent) => parent.students)
-    @JoinColumn({ foreignKeyConstraintName: 'fk_student_parent' })
-    parent: Parent;
+    @OneToMany(() => Student, (student) => student.parent)
+    students: Student[];
 
 }

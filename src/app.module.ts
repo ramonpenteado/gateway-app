@@ -1,13 +1,14 @@
-import { Module } from '@nestjs/common';
-import { ParentModule, Parent } from './parents';
-import { StudentModule, Student } from './students';
 import { ConfigModule } from '@nestjs/config';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CrewModule } from './crew/crew.module';
-import { PresenceModule } from './prensence/presence.module';
-import { Crew } from './crew/entities/crew.entity';
-import { Presence } from './prensence/entities/presence.entity';
-import { Schedule } from './schedule/entities/schedule.entity';
+
+import { Crew, CrewModule } from './crew';
+import { ParentModule, Parent } from './parents';
+import { PresenceModule, Presence } from './prensence';
+import { StudentModule, Student } from './students';
+import { SecurityModule } from './security/security.module';
+import { Schedule, ScheduleModule } from './schedule';
+
 
 @Module({
   imports: [
@@ -15,6 +16,8 @@ import { Schedule } from './schedule/entities/schedule.entity';
     StudentModule,
     CrewModule,
     PresenceModule,
+    SecurityModule,
+    ScheduleModule,
     ConfigModule.forRoot({
       isGlobal: true
     }),
