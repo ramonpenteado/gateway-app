@@ -1,4 +1,3 @@
-import { Schedule } from 'src/schedule/entities/schedule.entity';
 import { Student } from 'src/students';
 import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 
@@ -20,9 +19,6 @@ export class Crew {
     @Column({default: () => 'CURRENT_TIMESTAMP'})
     updatedAt: Date;
 
-    // @OneToMany(() => Student, student => student.)
-    // users: Student[]
-
-    @OneToOne(() => Schedule, schedule => schedule.id)
-    schedule: Schedule;
+    @OneToMany(() => Student, student => student.crew)
+    students: Student[]
 }

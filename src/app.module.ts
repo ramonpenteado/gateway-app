@@ -7,17 +7,17 @@ import { ParentModule, Parent } from './parents';
 import { PresenceModule, Presence } from './prensence';
 import { StudentModule, Student } from './students';
 import { SecurityModule } from './security/security.module';
-import { Schedule, ScheduleModule } from './schedule';
+import { Court, CourtModule } from './court';
 
 
 @Module({
   imports: [
     ParentModule,
     StudentModule,
+    CourtModule,
     CrewModule,
     PresenceModule,
     SecurityModule,
-    ScheduleModule,
     ConfigModule.forRoot({
       isGlobal: true
     }),
@@ -28,7 +28,7 @@ import { Schedule, ScheduleModule } from './schedule';
       username: process.env.POSTGRES_USERS_USER,
       password: process.env.POSTGRES_USERS_PASSWORD,
       database: process.env.POSTGRES_USERS_DATABASE,
-      entities: [Parent, Presence, Crew, Schedule, Student],
+      entities: [Parent, Presence, Crew, Student, Court],
       migrations: [`${__dirname}/migrations/*{.ts,.js}`],
       migrationsRun: true,
       logging: true,

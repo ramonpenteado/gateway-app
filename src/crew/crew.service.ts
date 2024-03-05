@@ -22,7 +22,10 @@ export class CrewService {
 
     public async getCrewById(id: string): Promise<Crew> {
         try {
-            const crew = await this.crewRepository.findOneBy({ id: id });
+            const crew = await this.crewRepository.findOne({
+                where: { id },
+                relations: ['students']
+            })
             return crew;
         } catch (error) {
             return null;

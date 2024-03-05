@@ -45,4 +45,8 @@ export class Student {
     @JoinColumn({ foreignKeyConstraintName: 'fk_student_parent' })
     parent: Parent;
 
+    @ManyToOne(() => Crew, (crew) => crew.students)
+    @JoinColumn({ foreignKeyConstraintName: 'fk_student_crew' })
+    crew: Crew;
+
 }
