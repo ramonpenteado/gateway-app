@@ -1,14 +1,17 @@
-import { ConfigModule } from '@nestjs/config';
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Module, Type } from '@nestjs/common';
+import { TypeOrmModule, TypeOrmModuleAsyncOptions, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-import { Crew, CrewModule } from './crew';
-import { ParentModule, Parent } from './parents';
-import { PresenceModule, Presence } from './prensence';
-import { StudentModule, Student } from './students';
-import { SecurityModule } from './security/security.module';
-import { Court, CourtModule } from './court';
+import {
+  CrewModule,
+  ParentModule,
+  PresenceModule,
+  StudentModule,
+  SecurityModule,
+  CourtModule,
+} from './modules';
 
+import { ENTITIES } from './modules';
 
 @Module({
   imports: [
@@ -28,7 +31,7 @@ import { Court, CourtModule } from './court';
       username: process.env.POSTGRES_USERS_USER,
       password: process.env.POSTGRES_USERS_PASSWORD,
       database: process.env.POSTGRES_USERS_DATABASE,
-      entities: [Parent, Presence, Crew, Student, Court],
+      entities: ENTITIES,
       migrations: [`${__dirname}/migrations/*{.ts,.js}`],
       migrationsRun: true,
       logging: true,
