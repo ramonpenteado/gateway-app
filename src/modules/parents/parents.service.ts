@@ -13,7 +13,6 @@ export class ParentService {
 
   public async getParentByEmail(email: string): Promise<Parent[]> {
     try {
-      console.log(email)
       const parent = await this.parentRepository.find({
         where: { email },
         relations: ['students']

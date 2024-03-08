@@ -12,8 +12,8 @@ export class CourtService {
 
     public async getCourt(): Promise<Court[]> {
         try {
-            const Court = await this.courtRepository.find();
-            return Court;
+            const court = await this.courtRepository.find();
+            return court;
         } catch (error) {
             console.error(error);
             return null;
@@ -22,19 +22,37 @@ export class CourtService {
 
     public async getCourtById(id: string): Promise<Court> {
         try {
-            const Court = await this.courtRepository.findOne({
+            const court = await this.courtRepository.findOne({
                 where: { id },
-                relations: ['students']
+                relations: ['crew', 'crew.students'],
             })
-            return Court;
+            return court;
         } catch (error) {
+            console.log(error)
             return null;
         }
     }
 
-    public async createCourt(Court: any): Promise<Court> {
+    public async getCourtAndStudentsByCourtId(id: string): Promise<Court> {
         try {
-            const newCourt = await this.courtRepository.save(Court);
+            const court = await this.courtRepository.findOne({
+                where: { id },
+                relations: ['crew', 'crew.students'],
+            })
+
+            const crewId = court.crew.id;
+
+            return court;
+
+        } catch (error) {
+            console.log(error)
+            return null;
+        }
+    }
+
+    public async createCourt(court: any): Promise<Court> {
+        try {
+            const newCourt = await this.courtRepository.save(court);
             return newCourt;
         } catch (error) {
             return null;

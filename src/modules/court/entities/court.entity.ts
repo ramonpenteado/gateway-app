@@ -1,9 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, OneToMany } from 'typeorm';
+import { Crew } from '@modules/crew';
+import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, OneToMany, ManyToMany, JoinTable, JoinColumn, Unique, OneToOne } from 'typeorm';
 
 
 @Entity('court')
 export class Court {
     @PrimaryGeneratedColumn('uuid')
+    @Unique("court_id", ["id"])
     id: string;
 
     @PrimaryColumn()
@@ -17,4 +19,11 @@ export class Court {
 
     @Column({default: () => 'CURRENT_TIMESTAMP'})
     updatedAt: Date;
+
+    @Column({default: () => 'CURRENT_TIMESTAMP'})
+    date_time: Date;
+
+    @OneToOne((type) => Crew, (crew) => crew.court)
+    @JoinColumn()
+    crew: Crew;
 }

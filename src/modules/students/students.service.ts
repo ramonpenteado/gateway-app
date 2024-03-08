@@ -13,7 +13,6 @@ export class StudentService {
 
   public async getStudentByEmail(email: string): Promise<Student[]> {
     try {
-      console.log(email)
       const student = await this.studentRepository.find({
         where: { email },
         relations: ['parent']

@@ -6,6 +6,7 @@ import { Parent } from '@modules/parents';
 @Entity('student')
 @Unique(['username'])
 @Unique(['email'])
+@Unique('student_id', ['id'])
 export class Student {
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -42,7 +43,6 @@ export class Student {
     last_name: string;
 
     @ManyToOne(() => Parent, (parent) => parent.students)
-    @JoinColumn({ foreignKeyConstraintName: 'fk_student_parent' })
     parent: Parent;
 
     @ManyToOne(() => Crew, (crew) => crew.students)
